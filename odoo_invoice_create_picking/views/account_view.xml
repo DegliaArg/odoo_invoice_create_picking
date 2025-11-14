@@ -14,12 +14,7 @@
                     string="Crear Remito"
                     type="object"
                     class="oe_highlight"
-                    attrs="{
-                        'invisible': ['|',
-                            ('move_type', '!=', 'out_invoice'),
-                            ('picking_id', '!=', False)
-                        ]
-                    }"
+                    invisible="['|', ('move_type', '!=', 'out_invoice'), ('picking_id', '!=', False)]"
                 />
             </xpath>
 
