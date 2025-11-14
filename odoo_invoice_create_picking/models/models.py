@@ -63,16 +63,14 @@ class AccountMove(models.Model):
                 "location_id": picking_type.default_location_src_id.id,
                 "location_dest_id": location_dest.id,
                 "company_id": move.company_id.id,
-                # clave: forzamos move_type válido para stock.picking
-                "move_type": "direct",
+                "move_type": "direct",  # valor válido para stock.picking
             }
             picking = self.env["stock.picking"].create(vals_picking)
-
             move.picking_id = picking.id
 
-            # Crear movimientos por cada línea de la factura
+            # Crear movimientos por cada línea de factura con producto
             invoice_lines = move.invoice_line_ids.filtered(
-                lambda l: l.product_id and not l.display_type
+                lambda l: l.product_id
             )
             for line in invoice_lines:
                 vals_move = {
