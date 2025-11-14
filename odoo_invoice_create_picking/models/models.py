@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import api, fields, models, _
+from odoo import fields, models, _
 from odoo.exceptions import ValidationError
 from datetime import datetime
 
@@ -31,7 +31,10 @@ class AccountMove(models.Model):
             )
             if not picking_type:
                 raise ValidationError(
-                    _("No tiene configurada la operación de entrega (picking_type) para la compañía %s.")
+                    _(
+                        "No tiene configurada la operación de entrega (picking_type) "
+                        "para la compañía %s."
+                    )
                     % move.company_id.display_name
                 )
 
@@ -45,7 +48,9 @@ class AccountMove(models.Model):
             )
             if not location_dest:
                 raise ValidationError(
-                    _("No está configurada la ubicación de cliente para la compañía %s.")
+                    _(
+                        "No está configurada la ubicación de cliente para la compañía %s."
+                    )
                     % move.company_id.display_name
                 )
 
@@ -57,6 +62,7 @@ class AccountMove(models.Model):
                 "location_id": picking_type.default_location_src_id.id,
                 "location_dest_id": location_dest.id,
                 "company_id": move.company_id.id,
+                # OJO: acá NO va ningún 'move_type'
             }
             picking = self.env["stock.picking"].create(vals_picking)
             move.picking_id = picking.id
